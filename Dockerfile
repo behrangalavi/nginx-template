@@ -7,3 +7,5 @@ EXPOSE 8080
 USER 101
 
 CMD nginx -g 'daemon off;'
+
+#test1
