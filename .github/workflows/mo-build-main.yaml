@@ -109,3 +109,15 @@ jobs:
           containerName: test004
           keyKind: ${{ vars.MO_API_KIND__MAIN }}
           token: ${{MO_API_TOKEN__52b6582df750bf5c3dfd__MAIN}
+      - id: releaseWithMogenius-52b6582df750bf5c3dfd
+        name: Release with mogenius
+        uses: mogenius/mogenius-release-action@v1
+        with:
+          dev: true
+          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
+          kind: Deployment
+          namespace: my-namespace2
+          resourceName: test004
+          containerName: test004
+          keyKind: ${{ vars.MO_API_KIND__MAIN }}
+          token: ${{MO_API_TOKEN__52b6582df750bf5c3dfd__MAIN}}
