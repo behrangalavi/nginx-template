@@ -41,7 +41,7 @@ jobs:
         with:
           registry: ${{ vars.MO_REGISTRY_AUTH_URL__MAIN }}
           username: ${{ vars.MO_REGISTRY_USER__MAIN }}
-          password: ${{ secrets.MO_REGISTRY_PAT }}
+          password: ${{ secrets.MO_REGISTRY_PAT__MAIN }}
       - name: Build image
         run: |
           docker build -f ${{ vars.MO_DOCKERFILE__MAIN }} ${{vars.MO_DOCKER_ARGS__MAIN}} -t ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }} -t ${{ vars.MO_IMAGE_NAME__MAIN }}:latest ${{vars.MO_DOCKERCONTEXT__MAIN}}
@@ -49,18 +49,18 @@ jobs:
         run: |
           docker push ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
           docker push ${{ vars.MO_IMAGE_NAME__MAIN }}:latest
-      - id: releaseWithMogenius
+      - id: releaseWithMogeniusf952fdaaab446d108246
         name: Release with mogenius
         uses: mogenius/mogenius-release-action@v1
         with:
           dev: true
-          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
-          kind: ${{ vars.MO_KIND }}
-          namespace: ${{ vars.MO_NAMESPACE_NAME }}
-          resourceName: ${{ vars.MO_RESOURCE_NAME }}
-          containerName: ${{ vars.MO_CONTAINER_NAME }}
           keyKind: ${{ vars.MO_API_KIND__MAIN }}
-          token: ${{ secrets.MO_API_TOKEN }}
+          token: ${{ secrets.MO_API_TOKEN__MAIN }}
+          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
+          kind: Deployment
+          namespace: my-namespace
+          resourceName: test001
+          containerName: test001
       - id: releaseWithMogeniusf952fdaaab446d108246
         name: Release with mogenius
         uses: mogenius/mogenius-release-action@v1
