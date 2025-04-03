@@ -73,3 +73,15 @@ jobs:
           containerName: test002
           keyKind: ${{ vars.MO_API_KIND__MAIN }}
           token: ${{ secrets.MO_API_TOKEN__MAIN }}
+      - id: releaseWithMogenius-ceab89fea7debe49c35e
+        name: Release with mogenius
+        uses: mogenius/mogenius-release-action@v1
+        with:
+          dev: true
+          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
+          kind: Deployment
+          namespace: project-1-default-31o09d
+          resourceName: test003
+          containerName: test003
+          keyKind: ${{ vars.MO_API_KIND__MAIN }}
+          token: ${{ secrets.MO_API_TOKEN__MAIN }}
