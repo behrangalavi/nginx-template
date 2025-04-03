@@ -42,13 +42,22 @@ jobs:
           registry: ${{ vars.MO_REGISTRY_AUTH_URL__MAIN }}
           username: ${{ vars.MO_REGISTRY_USER__MAIN }}
           password: ${{ secrets.MO_REGISTRY_PAT__MAIN }}
-      - name: Build image
-        run: |
-          docker build -f ${{ vars.MO_DOCKERFILE__MAIN }} ${{vars.MO_DOCKER_ARGS__MAIN}} -t ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }} -t ${{ vars.MO_IMAGE_NAME__MAIN }}:latest ${{vars.MO_DOCKERCONTEXT__MAIN}}
-      - name: Push image
-        run: |
-          docker push ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
-          docker push ${{ vars.MO_IMAGE_NAME__MAIN }}:latest
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push multi-arch image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ vars.MO_DOCKERCONTEXT__MAIN }}
+          file: ${{ vars.MO_DOCKERFILE__MAIN }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
+            ${{ vars.MO_IMAGE_NAME__MAIN }}:latest    
       - id: releaseWithMogenius-24e2353c8f7b6271e8aa
         name: Release with mogenius
         uses: mogenius/mogenius-release-action@v1
