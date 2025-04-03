@@ -96,4 +96,4 @@ jobs:
           resourceName: test004
           containerName: test004
           keyKind: ${{ vars.MO_API_KIND__MAIN }}
-          token: ${{MO_API_TOKEN__52b6582df750bf5c3dfd__MAIN}}
+          token: ${{ secrets.MO_API_TOKEN__52b6582df750bf5c3dfd__MAIN }}
