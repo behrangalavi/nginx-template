@@ -42,43 +42,21 @@ jobs:
           registry: ${{ vars.MO_REGISTRY_AUTH_URL__MAIN }}
           username: ${{ vars.MO_REGISTRY_USER__MAIN }}
           password: ${{ secrets.MO_REGISTRY_PAT__MAIN }}
-      - id: releaseWithMogenius-24e2353c8f7b6271e8aa
-        name: Release with mogenius
-        uses: mogenius/mogenius-release-action@v1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push multi-arch image
+        uses: docker/build-push-action@v5
         with:
-          dev: true
-          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
-          kind: Deployment
-          namespace: my-namespace
-          resourceName: test001
-          containerName: test001
-          keyKind: ${{ vars.MO_API_KIND__MAIN }}
-          token: ${{ secrets.MO_API_TOKEN__MAIN }}
-      - id: releaseWithMogenius-929252caef72ecdf5915
-        name: Release with mogenius
-        uses: mogenius/mogenius-release-action@v1
-        with:
-          dev: true
-          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
-          kind: Deployment
-          namespace: my-namespace
-          resourceName: test002
-          containerName: test002
-          keyKind: ${{ vars.MO_API_KIND__MAIN }}
-          token: ${{ secrets.MO_API_TOKEN__MAIN }}
-      - id: releaseWithMogenius-ceab89fea7debe49c35e
-        name: Release with mogenius
-        uses: mogenius/mogenius-release-action@v1
-        with:
-          dev: true
-          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
-          kind: Deployment
-          namespace: project-1-default-31o09d
-          resourceName: test003
-          containerName: test003
-          keyKind: ${{ vars.MO_API_KIND__MAIN }}
-          token: ${{ secrets.MO_API_TOKEN__MAIN }}
-      - id: releaseWithMogenius-52b6582df750bf5c3dfd
+          context: ${{ vars.MO_DOCKERCONTEXT__MAIN }}
+          file: ${{ vars.MO_DOCKERFILE__MAIN }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
+            ${{ vars.MO_IMAGE_NAME__MAIN }}:latest    
+      - id: releaseWithMogenius-4c3c50d2cd2bef8e1b5d
         name: Release with mogenius
         uses: mogenius/mogenius-release-action@v1
         with:
@@ -86,19 +64,7 @@ jobs:
           image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
           kind: Deployment
           namespace: my-namespace2
-          resourceName: test004
-          containerName: test004
+          resourceName: test006
+          containerName: test006
           keyKind: ${{ vars.MO_API_KIND__MAIN }}
-          token: ${{ secrets.MO_API_TOKEN__52b6582df750bf5c3dfd__MAIN }}
-      - id: releaseWithMogenius-c9a7dc698e4dba4f1753
-        name: Release with mogenius
-        uses: mogenius/mogenius-release-action@v1
-        with:
-          dev: true
-          image: ${{ vars.MO_IMAGE_NAME__MAIN }}:${{ env.VERSION }}
-          kind: Deployment
-          namespace: my-namespace2
-          resourceName: test005
-          containerName: test005
-          keyKind: ${{ vars.MO_API_KIND__MAIN }}
-          token: ${{ secrets.MO_API_TOKEN__c9a7dc698e4dba4f1753__MAIN }}
+          token: ${{ secrets.MO_API_TOKEN__4c3c50d2cd2bef8e1b5d__MAIN }}
